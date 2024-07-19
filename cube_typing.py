@@ -4,6 +4,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
 from pynput.keyboard import Key, Controller
+from selenium.webdriver.common.by import By
 
 
 def press(button):
@@ -96,14 +97,14 @@ opt.add_argument("--window-size=950,1100")
 driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=opt)
 driver.implicitly_wait(10)
 
-driver.get("https://twizzle.net/play/")
+driver.get("https://twizzle.net/play/") #consider using https://alpha.twizzle.net/explore/
 keyboard = Controller()
 
 check = ""
 is_moving = False
 state = 0
 while True:
-    link = driver.find_element_by_xpath(
+    link = driver.find_element(By.XPATH,
         "/html/body/div/div/a").get_attribute("href")
     if link != check:
         check = link
@@ -131,10 +132,14 @@ while True:
                     keyboard.press(replace_move_right(turn))
                     if replace_move_right(turn) == Key.enter:
                         state = 0
-            driver.find_element_by_xpath(
+            # if not is_moving:
+            #     keyboard.press(press_arrow(turn))
+            #     is_moving = True
+            # else:
+            #     keyboard.release(release_arrow(turn))
+            #     is_moving = False
+            driver.find_element(By.XPATH,
                 '/html/body/div/div/button[1]').click()
         except:
-            driver.find_element_by_xpath(
+            driver.find_element(By.XPATH,
                 '/html/body/div/div/button[1]').click()
-
-
